@@ -16,6 +16,8 @@
 		A5A2156529D73A49001B121D /* Entity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A2156329D73A49001B121D /* Entity+CoreDataClass.swift */; };
 		A5A2156629D73A49001B121D /* Entity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A2156429D73A49001B121D /* Entity+CoreDataProperties.swift */; };
 		A5A2156A29D7402D001B121D /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A5A2156929D7402D001B121D /* SnapKit */; };
+		A5A2156E29D77882001B121D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A2156D29D77882001B121D /* DetailViewController.swift */; };
+		A5A2157029D7856A001B121D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A2156F29D7856A001B121D /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,8 @@
 		A5A2155A29D702CF001B121D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5A2156329D73A49001B121D /* Entity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Entity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A5A2156429D73A49001B121D /* Entity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Entity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A5A2156D29D77882001B121D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		A5A2156F29D7856A001B121D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +69,7 @@
 				A5A2156729D73A52001B121D /* CoreData */,
 				A5A2156129D7031A001B121D /* Source */,
 				A5A2156229D7031F001B121D /* Resource */,
+				A5A2156F29D7856A001B121D /* Model.swift */,
 			);
 			path = "Home Work 22";
 			sourceTree = "<group>";
@@ -83,6 +88,7 @@
 			children = (
 				A5A2156029D7030F001B121D /* App */,
 				A5A2154D29D702CE001B121D /* ViewController.swift */,
+				A5A2156D29D77882001B121D /* DetailViewController.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -189,6 +195,8 @@
 				A5A2154C29D702CE001B121D /* SceneDelegate.swift in Sources */,
 				A5A2156529D73A49001B121D /* Entity+CoreDataClass.swift in Sources */,
 				A5A2155429D702CE001B121D /* Home_Work_22.xcdatamodeld in Sources */,
+				A5A2156E29D77882001B121D /* DetailViewController.swift in Sources */,
+				A5A2157029D7856A001B121D /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

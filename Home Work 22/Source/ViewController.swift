@@ -10,6 +10,10 @@ import SnapKit
 
 class ViewController: UIViewController {
     
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    var models = [ContactList]()
+    
     //MARK: - Outlets
     
     private lazy var textField: UITextField = {
@@ -25,7 +29,9 @@ class ViewController: UIViewController {
     
     private lazy var button: UIButton = {
         let action = UIAction(title: "Tap me") { _ in
-            print("Wow")
+            guard let text = self.textField.text, !text.isEmpty else { return }
+            self.createItem(name: text)
+            print(text)
         }
         let button = UIButton(type: .system, primaryAction: action)
         button.setTitle("Press", for: .normal)
@@ -33,6 +39,7 @@ class ViewController: UIViewController {
         button.backgroundColor = .systemBlue
         button.titleLabel?.font = UIFont.systemFont(ofSize: 19)
         button.setTitleColor(UIColor.white, for: .normal)
+        
         return button
     }()
     
@@ -48,6 +55,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
+        getAllItems()
         setupView()
         setupHierarchy()
         setupLayout()
@@ -101,33 +109,89 @@ class ViewController: UIViewController {
     view.endEditing(true)
     }
     
+    //MARK: - Core Data
+
+    func getAllItems() {
+        do {
+            models = try context.fetch(ContactList.fetchRequest())
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+           
+        } catch {
+            print("Error")
+        }
+    }
+    
+    func createItem(name: String) {
+        let newItem = ContactList(context: context)
+        newItem.name = name
+        newItem.date = Date()
+        
+        do {
+            try context.save()
+            getAllItems()
+        } catch {
+            print("error save")
+        }
+    }
+    
+    func deleteItem(item: ContactList) {
+        context.delete(item)
+       
+        do {
+            try context.save()
+            getAllItems()
+        } catch {
+            print("error save")
+        }
+    }
+    
+    func updateItem(item: ContactList, newName: String) {
+        item.name = newName
+        
+        do {
+            try context.save()
+            getAllItems()
+        } catch {
+            print("error save")
+        }
+    }
 }
 
 
 extension ViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return models.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = "My"
+        cell.selectionStyle = .default
+        let item = models[indexPath.row]
+        cell.textLabel?.text = item.name
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let item = models[indexPath.row]
+        let detailView = DetailViewController()
+        detailView.item = item
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            tableView.beginUpdates()
+            deleteItem(item: models[indexPath.row])
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.endUpdates()
             
         }
     }
-    
-    
 }
 
 
