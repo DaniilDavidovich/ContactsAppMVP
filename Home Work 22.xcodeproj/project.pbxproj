@@ -15,6 +15,7 @@
 		A5A2155929D702CF001B121D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5A2155729D702CF001B121D /* LaunchScreen.storyboard */; };
 		A5A2156529D73A49001B121D /* Entity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A2156329D73A49001B121D /* Entity+CoreDataClass.swift */; };
 		A5A2156629D73A49001B121D /* Entity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A2156429D73A49001B121D /* Entity+CoreDataProperties.swift */; };
+		A5A2156A29D7402D001B121D /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A5A2156929D7402D001B121D /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5A2156A29D7402D001B121D /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +123,9 @@
 			dependencies = (
 			);
 			name = "Home Work 22";
+			packageProductDependencies = (
+				A5A2156929D7402D001B121D /* SnapKit */,
+			);
 			productName = "Home Work 22";
 			productReference = A5A2154629D702CE001B121D /* Home Work 22.app */;
 			productType = "com.apple.product-type.application";
@@ -149,6 +154,9 @@
 				Base,
 			);
 			mainGroup = A5A2153D29D702CE001B121D;
+			packageReferences = (
+				A5A2156829D7402D001B121D /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = A5A2154729D702CE001B121D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -388,6 +396,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A5A2156829D7402D001B121D /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A5A2156929D7402D001B121D /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5A2156829D7402D001B121D /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		A5A2155229D702CE001B121D /* Home_Work_22.xcdatamodeld */ = {
