@@ -47,6 +47,7 @@ class ViewController: UIViewController {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.dataSource = self
+        tableView.delegate = self
         return tableView
     }()
     
@@ -181,7 +182,9 @@ extension ViewController: UITableViewDataSource {
         let item = models[indexPath.row]
         let detailView = DetailViewController()
         detailView.item = item
+        self.navigationController?.pushViewController(detailView, animated: true)
     }
+    
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -189,9 +192,12 @@ extension ViewController: UITableViewDataSource {
             deleteItem(item: models[indexPath.row])
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
-            
         }
     }
+}
+
+extension ViewController: UITableViewDelegate {
+    
 }
 
 
