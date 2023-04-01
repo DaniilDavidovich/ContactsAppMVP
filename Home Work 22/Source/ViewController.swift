@@ -8,11 +8,13 @@
 import UIKit
 import SnapKit
 
+protocol ViewControllerDelegate: AnyObject {
+    func reloadData()
+}
+
 class ViewController: UIViewController {
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
-    var models = [ContactList]()
+    var coreData = CoreDataClass()
     
     //MARK: - Outlets
     
@@ -30,8 +32,9 @@ class ViewController: UIViewController {
     private lazy var button: UIButton = {
         let action = UIAction(title: "Tap me") { _ in
             guard let text = self.textField.text, !text.isEmpty else { return }
-            self.createItem(name: text)
-            print(text)
+            self.coreData.createItem(name: text)
+            self.textField.text = ""
+          
         }
         let button = UIButton(type: .system, primaryAction: action)
         button.setTitle("Press", for: .normal)
@@ -47,6 +50,7 @@ class ViewController: UIViewController {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.dataSource = self
+        tableView.delegate = self
         return tableView
     }()
     
@@ -55,10 +59,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
-        getAllItems()
+        coreData.delegate = self
+        coreData.getAllItems()
         setupView()
         setupHierarchy()
         setupLayout()
+        print(coreData.models)
     }
     
     //MARK: - Setups
@@ -108,89 +114,50 @@ class ViewController: UIViewController {
     @objc func dismissKeyboard() {
     view.endEditing(true)
     }
-    
-    //MARK: - Core Data
-
-    func getAllItems() {
-        do {
-            models = try context.fetch(ContactList.fetchRequest())
-            
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-           
-        } catch {
-            print("Error")
-        }
-    }
-    
-    func createItem(name: String) {
-        let newItem = ContactList(context: context)
-        newItem.name = name
-        newItem.date = Date()
-        
-        do {
-            try context.save()
-            getAllItems()
-        } catch {
-            print("error save")
-        }
-    }
-    
-    func deleteItem(item: ContactList) {
-        context.delete(item)
-       
-        do {
-            try context.save()
-            getAllItems()
-        } catch {
-            print("error save")
-        }
-    }
-    
-    func updateItem(item: ContactList, newName: String) {
-        item.name = newName
-        
-        do {
-            try context.save()
-            getAllItems()
-        } catch {
-            print("error save")
-        }
-    }
 }
 
 
 extension ViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return models.count
+        return coreData.models.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.selectionStyle = .default
-        let item = models[indexPath.row]
+        let item = coreData.models[indexPath.row]
         cell.textLabel?.text = item.name
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let item = models[indexPath.row]
+        let item = coreData.models[indexPath.row]
         let detailView = DetailViewController()
         detailView.item = item
+        self.navigationController?.pushViewController(detailView, animated: true)
     }
+    
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             tableView.beginUpdates()
-            deleteItem(item: models[indexPath.row])
+            coreData.deleteItem(item: coreData.models[indexPath.row])
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
-            
         }
+    }
+}
+
+extension ViewController: UITableViewDelegate {
+    
+}
+
+extension ViewController: ViewControllerDelegate {
+    func reloadData() {
+        tableView.reloadData()
     }
 }
 
