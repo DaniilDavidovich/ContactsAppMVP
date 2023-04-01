@@ -30,19 +30,19 @@ class ViewController: UIViewController {
     }()
     
     private lazy var button: UIButton = {
+        
         let action = UIAction(title: "Tap me") { _ in
             guard let text = self.textField.text, !text.isEmpty else { return }
             self.coreData.createItem(name: text)
             self.textField.text = ""
-          
         }
+        
         let button = UIButton(type: .system, primaryAction: action)
         button.setTitle("Press", for: .normal)
         button.layer.cornerRadius = 15
         button.backgroundColor = .systemBlue
         button.titleLabel?.font = UIFont.systemFont(ofSize: 19)
         button.setTitleColor(UIColor.white, for: .normal)
-        
         return button
     }()
     
@@ -64,7 +64,6 @@ class ViewController: UIViewController {
         setupView()
         setupHierarchy()
         setupLayout()
-        print(coreData.models)
     }
     
     //MARK: - Setups
@@ -122,7 +121,6 @@ extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return coreData.models.count
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)

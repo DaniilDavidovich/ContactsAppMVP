@@ -21,7 +21,6 @@ class CoreDataClass {
     func getAllItems() {
         do {
             models = try context.fetch(ContactList.fetchRequest())
-            print(models.count)
             DispatchQueue.main.async {
                 self.delegate?.reloadData()
             }

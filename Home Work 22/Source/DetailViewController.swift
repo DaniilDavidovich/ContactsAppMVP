@@ -19,8 +19,10 @@ class DetailViewController: UIViewController  {
         present(imagePicker, animated: true, completion: nil)
     }
     
-    
     //MARK: - Outlets
+    
+    let datePicker = UIDatePicker()
+    
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "person.fill"))
@@ -40,13 +42,6 @@ class DetailViewController: UIViewController  {
         tableView.separatorInset = UIEdgeInsets.zero
         tableView.allowsSelection = false
         return tableView
-    }()
-    
-    private lazy var label: UILabel = {
-        let label = UILabel()
-        
-        
-        return label
     }()
     
     //MARK: - Lyfecycle
@@ -87,17 +82,91 @@ class DetailViewController: UIViewController  {
         }
     }
     
+    private func setupDataPickerForCell(cell: UITableViewCell) {
+        datePicker.isUserInteractionEnabled = false
+        datePicker.datePickerMode = .date
+                datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
+                cell.contentView.addSubview(datePicker)
+                
+        datePicker.snp.makeConstraints { make in
+            make.right.equalTo(cell.contentView).inset(20)
+            make.centerY.equalTo(cell.contentView)
+        }
+    }
+    
+    private func setupLabel(cell: UITableViewCell) {
+        let nameLabel = UILabel()
+            nameLabel.text = "Name:"
+            nameLabel.textAlignment = .left
+            nameLabel.font = UIFont.systemFont(ofSize: 16)
+            cell.contentView.addSubview(nameLabel)
+
+            let valueLabel = UILabel()
+            valueLabel.text = item.name
+            valueLabel.textAlignment = .right
+            valueLabel.font = UIFont.systemFont(ofSize: 16)
+            cell.contentView.addSubview(valueLabel)
+
+            let padding: CGFloat = 16
+
+            nameLabel.snp.makeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                make.left.equalToSuperview().offset(padding)
+                make.right.equalTo(valueLabel.snp.left).offset(-padding)
+                make.width.equalTo(valueLabel.snp.width)
+            }
+
+            valueLabel.snp.makeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                make.right.equalToSuperview().inset(padding)
+            }
+    }
+    
+    private func setupGender(cell: UITableViewCell) {
+        let nameLabel = UILabel()
+            nameLabel.text = "Gender:"
+            nameLabel.textAlignment = .left
+            nameLabel.font = UIFont.systemFont(ofSize: 16)
+            cell.contentView.addSubview(nameLabel)
+
+            let valueLabel = UILabel()
+            valueLabel.text = item.gender ?? "Select"
+            valueLabel.textAlignment = .right
+            valueLabel.font = UIFont.systemFont(ofSize: 16)
+            cell.contentView.addSubview(valueLabel)
+
+            let padding: CGFloat = 16
+
+            nameLabel.snp.makeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                make.left.equalToSuperview().offset(padding)
+                make.right.equalTo(valueLabel.snp.left).offset(-padding)
+                make.width.equalTo(valueLabel.snp.width)
+            }
+
+            valueLabel.snp.makeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                make.right.equalToSuperview().inset(padding)
+            }
+    }
+    
     @objc private func addButtonTapped() {
         if !tableView.allowsSelection {
             tableView.allowsSelection = true
             let addButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(addButtonTapped))
             navigationItem.rightBarButtonItem = addButton
+            self.datePicker.isUserInteractionEnabled = true
+            
         } else {
             tableView.allowsSelection = false
             let addButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(addButtonTapped))
             navigationItem.rightBarButtonItem = addButton
-            
+            self.datePicker.isUserInteractionEnabled = false
         }
+    }
+    
+    @objc func datePickerChanged(_ sender: UIDatePicker) {
+        print(sender.date)
     }
 }
 
@@ -113,17 +182,14 @@ extension DetailViewController: UITableViewDataSource {
         case 0:
             self.setupImageViewForCell(cell: cell)
         case 1:
-            cell.textLabel?.text = item.name
+            setupLabel(cell: cell)
         case 2:
-            cell.textLabel?.text = item.name
+            cell.textLabel?.text = "Birthday: "
+            setupDataPickerForCell(cell: cell)
         case 3:
-            cell.textLabel?.text = item.gender ?? "Gender"
+            setupGender(cell: cell)
         default: break
         }
-        
-        // запрещено нажимать
-//        cell.isUserInteractionEnabled = false
-
         return cell
     }
     
@@ -141,14 +207,9 @@ extension DetailViewController: UITableViewDataSource {
 //            
         default: break
         }
-        
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            
-        }
-    }
+    
 }
 
 extension DetailViewController: UITableViewDelegate {
