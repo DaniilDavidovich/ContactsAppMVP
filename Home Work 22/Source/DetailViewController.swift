@@ -133,12 +133,12 @@ extension DetailViewController: UITableViewDataSource {
         switch indexPath.row {
         case 0:
             setupImagePicker()
-        case 1:
-            
-        case 2:
-            
-        case 3:
-            
+//        case 1:
+//            
+//        case 2:
+//            
+//        case 3:
+//            
         default: break
         }
         
