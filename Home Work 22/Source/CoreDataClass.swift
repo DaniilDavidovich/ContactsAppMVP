@@ -33,7 +33,6 @@ class CoreDataClass {
     func createItem(name: String) {
         let newItem = ContactList(context: context)
         newItem.name = name
-        newItem.date = Date()
         
         do {
             try context.save()
@@ -67,6 +66,28 @@ class CoreDataClass {
     
     func updateGender(item: ContactList, newGender: String) {
         item.gender = newGender
+        
+        do {
+            try context.save()
+            getAllItems()
+        } catch {
+            print("error save")
+        }
+    }
+    
+    func updateDate(item: ContactList, newDate: Date) {
+        item.date = newDate
+        
+        do {
+            try context.save()
+            getAllItems()
+        } catch {
+            print("error save")
+        }
+    }
+    
+    func updateImage(item: ContactList, newImage: Date) {
+        item.image = newImage
         
         do {
             try context.save()

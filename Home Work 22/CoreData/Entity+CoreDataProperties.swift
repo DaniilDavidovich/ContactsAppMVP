@@ -16,6 +16,7 @@ extension ContactList {
         return NSFetchRequest<ContactList>(entityName: "ContactList")
     }
 
+    @NSManaged public var image: Date?
     @NSManaged public var name: String?
     @NSManaged public var date: Date?
     @NSManaged public var gender: String?

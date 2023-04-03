@@ -14,6 +14,7 @@ class DetailViewController: UIViewController  {
         didSet {
             buttonName.setTitle("\(item?.name ?? "Error")", for: .normal)
             buttonGender.setTitle("\(item?.gender ?? "Select")", for: .normal)
+            datePicker.date = item?.date ?? Date()
         }
     }
     
@@ -83,6 +84,7 @@ class DetailViewController: UIViewController  {
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
+        datePicker.addTarget(self, action: #selector(giveDate(_:)), for: .valueChanged)
         datePicker.isUserInteractionEnabled = false
         return datePicker
     }()
@@ -242,7 +244,6 @@ class DetailViewController: UIViewController  {
               imageView.isUserInteractionEnabled = false
               buttonGender.setTitleColor(.black, for: .normal)
               buttonName.setTitleColor(.black, for: .normal)
-//              self.coreData.createGender(gender: buttonGender.titleLabel?.text ?? "Error button")
              
               
               self.coreData.updateName(item: self.item ?? ContactList(),
@@ -250,7 +251,8 @@ class DetailViewController: UIViewController  {
               
               self.coreData.updateGender(item: self.item ?? ContactList(),
                                          newGender: "\(buttonGender.titleLabel?.text ?? "Empty")")
-              print(buttonGender.titleLabel?.text  as Any)
+              
+              self.coreData.updateDate(item: self.item ?? ContactList(), newDate: datePicker.date )
               isEdit.toggle()
           } else {
               // Если режим не редактирования, меняем кнопку на "Done"
@@ -264,6 +266,14 @@ class DetailViewController: UIViewController  {
               buttonName.setTitleColor(.systemBlue, for: .normal)
               isEdit.toggle()
           }
+    }
+    
+    @objc private func giveDate(_ sender: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd.MM.yyyy" // задаем формат даты
+            
+            let selectedDate = dateFormatter.string(from: sender.date)
+            print(selectedDate)
     }
     
     @objc private func pushAllertEdit() {
@@ -298,6 +308,8 @@ class DetailViewController: UIViewController  {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             imageView.image = pickedImage
+            guard let imageData = pickedImage.jpegData(compressionQuality: 1.0) else { return }
+//            self.item?.image = imageData
            
         }
         picker.dismiss(animated: true, completion: nil)
