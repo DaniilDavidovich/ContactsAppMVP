@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     
     var coreData = CoreDataClass()
     
+    var detailController = DetailViewController()
+    
     //MARK: - Outlets
     
     private lazy var textField: UITextField = {
@@ -60,6 +62,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
         coreData.delegate = self
+        detailController.delegate = self
+        
         coreData.getAllItems()
         setupView()
         setupHierarchy()
@@ -136,6 +140,7 @@ extension ViewController: UITableViewDataSource {
         let item = coreData.models[indexPath.row]
         let detailView = DetailViewController()
         detailView.item = item
+        print(detailView.item?.gender)
         self.navigationController?.pushViewController(detailView, animated: true)
     }
     

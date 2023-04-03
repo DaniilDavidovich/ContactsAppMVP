@@ -9,12 +9,17 @@ import UIKit
 import SnapKit
 
 class DetailViewController: UIViewController  {
-    
+ 
     var item: ContactList? {
         didSet {
             buttonName.setTitle("\(item?.name ?? "Error")", for: .normal)
+            buttonGender.setTitle("\(item?.gender ?? "Select")", for: .normal)
         }
     }
+    
+    weak var delegate: ViewControllerDelegate?
+    
+    var coreData = CoreDataClass()
     
     var isEdit = false
     
@@ -105,22 +110,11 @@ class DetailViewController: UIViewController  {
     
     private lazy var buttonGender: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitleColor(.systemBlue, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18)
-        button.setTitle("Select", for: .normal)
+//        button.setTitle("Select", for: .normal)
         
-        let maleAction = UIAction(title: "Male") { _ in
-            print("Male selected")
-        }
-        let femaleAction = UIAction(title: "Female") { _ in
-            print("Female selected")
-        }
-        
-        let nonBinary = UIAction(title: "Non Binary") { _ in
-            print("Non - binary selected")
-        }
-        
-        let menu = UIMenu(children: [maleAction, femaleAction, nonBinary])
+        let menu = UIMenu(children: allertForMenu())
 
         button.menu = menu
         button.showsMenuAsPrimaryAction = true
@@ -246,6 +240,17 @@ class DetailViewController: UIViewController  {
               buttonGender.isUserInteractionEnabled = false
               buttonName.isUserInteractionEnabled = false
               imageView.isUserInteractionEnabled = false
+              buttonGender.setTitleColor(.black, for: .normal)
+              buttonName.setTitleColor(.black, for: .normal)
+//              self.coreData.createGender(gender: buttonGender.titleLabel?.text ?? "Error button")
+             
+              
+              self.coreData.updateName(item: self.item ?? ContactList(),
+                                       newName: "\(buttonName.titleLabel?.text ?? "Empty")")
+              
+              self.coreData.updateGender(item: self.item ?? ContactList(),
+                                         newGender: "\(buttonGender.titleLabel?.text ?? "Empty")")
+              print(buttonGender.titleLabel?.text  as Any)
               isEdit.toggle()
           } else {
               // Если режим не редактирования, меняем кнопку на "Done"
@@ -255,6 +260,8 @@ class DetailViewController: UIViewController  {
               buttonGender.isUserInteractionEnabled = true
               buttonName.isUserInteractionEnabled = true
               imageView.isUserInteractionEnabled = true
+              buttonGender.setTitleColor(.systemBlue, for: .normal)
+              buttonName.setTitleColor(.systemBlue, for: .normal)
               isEdit.toggle()
           }
     }
@@ -266,9 +273,13 @@ class DetailViewController: UIViewController  {
         let cancel = UIAlertAction(title: "Cancel", style: .destructive) { _ in
             
         }
-        let done = UIAlertAction(title: "Done", style: .cancel) { _ in
-            
+        let done = UIAlertAction(title: "Done", style: .default) { [self] _ in
+           
+            if let newName = allert.textFields?.first?.text, !newName.isEmpty {
+                buttonName.setTitle("\(newName)", for: .normal)
+            }
         }
+        allert.textFields?.first?.text = self.item?.name
         allert.addAction(done)
         allert.addAction(cancel)
         present(allert, animated: true)
@@ -287,12 +298,37 @@ class DetailViewController: UIViewController  {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             imageView.image = pickedImage
+           
         }
         picker.dismiss(animated: true, completion: nil)
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
+    }
+    
+    private func allertForMenu() -> [UIMenuElement]{
+        
+        func setupButton(text: String) {
+            self.buttonGender.setTitle(text, for: .normal)
+            self.item?.gender = text
+        }
+        
+        let maleAction = UIAction(title: "Male") { action in
+            setupButton(text: action.title)
+            
+        }
+        
+        let femaleAction = UIAction(title: "Female") { action in
+            setupButton(text: action.title)
+        }
+        
+        let nonBinary = UIAction(title: "Non Binary") { action in
+            setupButton(text: action.title)
+        }
+        
+        let allerts = [maleAction, femaleAction, nonBinary]
+        return allerts
     }
 }
 

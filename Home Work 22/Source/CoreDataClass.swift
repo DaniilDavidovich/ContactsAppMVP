@@ -54,8 +54,19 @@ class CoreDataClass {
         }
     }
     
-    func updateItem(item: ContactList, newName: String) {
+    func updateName(item: ContactList, newName: String) {
         item.name = newName
+        
+        do {
+            try context.save()
+            getAllItems()
+        } catch {
+            print("error save")
+        }
+    }
+    
+    func updateGender(item: ContactList, newGender: String) {
+        item.gender = newGender
         
         do {
             try context.save()
