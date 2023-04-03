@@ -10,41 +10,103 @@ import SnapKit
 
 class DetailViewController: UIViewController  {
     
-    var item = ContactList()
-    
-    func setupImagePicker() {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-    //MARK: - Outlets
-    
-    let datePicker = UIDatePicker()
-    
-    
     private lazy var imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "person.fill"))
-        imageView.backgroundColor = .systemGray6
-        imageView.layer.cornerRadius = 20
+        let imageView = UIImageView(image: UIImage(systemName: "photo.circle.fill"))
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "detail cell")
-        tableView.isScrollEnabled = false
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.separatorStyle = .singleLine
-        tableView.separatorInset = UIEdgeInsets.zero
-        tableView.allowsSelection = false
-        return tableView
+    private lazy var iconImage: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "person"))
+        imageView.tintColor = .black
+        imageView.contentMode = .scaleAspectFill
+        
+        return imageView
     }()
     
-    //MARK: - Lyfecycle
+    private lazy var labelName: UILabel = {
+        let label = UILabel()
+        label.text = "Name:"
+        
+        return label
+    }()
+    
+    private lazy var labelNameData: UILabel = {
+        let label = UILabel()
+        label.text = "Text"
+        label.textAlignment = .right
+        
+        return label
+    }()
+    
+    private lazy var labelLine: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .systemGray4
+        label.layer.cornerRadius = 20
+        return label
+    }()
+    
+    private lazy var iconImage2: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "calendar"))
+        imageView.contentMode = .scaleAspectFill
+        imageView.tintColor = .black
+        return imageView
+    }()
+    
+    private lazy var labelDate: UILabel = {
+        let label = UILabel()
+        label.text = "Date:"
+        
+        
+        return label
+    }()
+    
+    private lazy var datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        return datePicker
+    }()
+    
+    private lazy var labelLine2: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .systemGray4
+        label.layer.cornerRadius = 20
+        
+        return label
+    }()
+    
+    private lazy var iconImage3: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "person.2.circle"))
+        imageView.contentMode = .scaleAspectFill
+        imageView.tintColor = .black
+        return imageView
+    }()
+    
+    private lazy var labelGender: UILabel = {
+        let label = UILabel()
+        label.text = "Gender:"
+        
+        return label
+    }()
+    
+    private lazy var labelGenderData: UILabel = {
+        let label = UILabel()
+        label.text = "Select"
+        label.textAlignment = .right
+        return label
+    }()
+    
+    private lazy var labelLine3: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .systemGray4
+        label.layer.cornerRadius = 20
+        
+        return label
+    }()
+    
+//    var item = ContactList()
+    
+    //MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,174 +117,93 @@ class DetailViewController: UIViewController  {
     
     //MARK: - Setups
     
-    private func setupView() {
+    func setupView() {
         view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.prefersLargeTitles = true
         title = "Contact"
-        let addButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(addButtonTapped))
-        navigationItem.rightBarButtonItem = addButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .edit)
     }
     
-    private func setupHierarchy() {
-        view.addSubview(tableView)
-    }
-    
-    private func setupLayout() {
-        tableView.snp.makeConstraints { make in
-            make.top.left.right.bottom.equalTo(view)
+    func setupHierarchy() {
+        let subviews = [imageView, iconImage, labelName, labelNameData, labelLine, iconImage2, labelDate, datePicker, labelLine2, iconImage3, labelGender, labelGenderData, labelLine3]
+        let _ = subviews.map { view in
+            self.view.addSubview(view)
         }
     }
     
-    //MARK: - Methods
-    
-    private func setupImageViewForCell(cell: UITableViewCell) {
-        cell.contentView.addSubview(self.imageView)
-        imageView.snp.makeConstraints { make in
-            make.center.equalTo(cell.contentView)
-            make.width.height.equalTo(150)
-        }
-    }
-    
-    private func setupDataPickerForCell(cell: UITableViewCell) {
-        datePicker.isUserInteractionEnabled = false
-        datePicker.datePickerMode = .date
-                datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
-                cell.contentView.addSubview(datePicker)
-                
-        datePicker.snp.makeConstraints { make in
-            make.right.equalTo(cell.contentView).inset(20)
-            make.centerY.equalTo(cell.contentView)
-        }
-    }
-    
-    private func setupLabel(cell: UITableViewCell) {
-        let nameLabel = UILabel()
-            nameLabel.text = "Name:"
-            nameLabel.textAlignment = .left
-            nameLabel.font = UIFont.systemFont(ofSize: 16)
-            cell.contentView.addSubview(nameLabel)
-
-            let valueLabel = UILabel()
-            valueLabel.text = item.name
-            valueLabel.textAlignment = .right
-            valueLabel.font = UIFont.systemFont(ofSize: 16)
-            cell.contentView.addSubview(valueLabel)
-
-            let padding: CGFloat = 16
-
-            nameLabel.snp.makeConstraints { make in
-                make.top.bottom.equalToSuperview()
-                make.left.equalToSuperview().offset(padding)
-                make.right.equalTo(valueLabel.snp.left).offset(-padding)
-                make.width.equalTo(valueLabel.snp.width)
-            }
-
-            valueLabel.snp.makeConstraints { make in
-                make.top.bottom.equalToSuperview()
-                make.right.equalToSuperview().inset(padding)
-            }
-    }
-    
-    private func setupGender(cell: UITableViewCell) {
-        let nameLabel = UILabel()
-            nameLabel.text = "Gender:"
-            nameLabel.textAlignment = .left
-            nameLabel.font = UIFont.systemFont(ofSize: 16)
-            cell.contentView.addSubview(nameLabel)
-
-            let valueLabel = UILabel()
-            valueLabel.text = item.gender ?? "Select"
-            valueLabel.textAlignment = .right
-            valueLabel.font = UIFont.systemFont(ofSize: 16)
-            cell.contentView.addSubview(valueLabel)
-
-            let padding: CGFloat = 16
-
-            nameLabel.snp.makeConstraints { make in
-                make.top.bottom.equalToSuperview()
-                make.left.equalToSuperview().offset(padding)
-                make.right.equalTo(valueLabel.snp.left).offset(-padding)
-                make.width.equalTo(valueLabel.snp.width)
-            }
-
-            valueLabel.snp.makeConstraints { make in
-                make.top.bottom.equalToSuperview()
-                make.right.equalToSuperview().inset(padding)
-            }
-    }
-    
-    @objc private func addButtonTapped() {
-        if !tableView.allowsSelection {
-            tableView.allowsSelection = true
-            let addButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(addButtonTapped))
-            navigationItem.rightBarButtonItem = addButton
-            self.datePicker.isUserInteractionEnabled = true
-            
-        } else {
-            tableView.allowsSelection = false
-            let addButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(addButtonTapped))
-            navigationItem.rightBarButtonItem = addButton
-            self.datePicker.isUserInteractionEnabled = false
-        }
-    }
-    
-    @objc func datePickerChanged(_ sender: UIDatePicker) {
-        print(sender.date)
-    }
-}
-
-extension DetailViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "detail cell", for: indexPath)
-        switch indexPath.row {
-        case 0:
-            self.setupImageViewForCell(cell: cell)
-        case 1:
-            setupLabel(cell: cell)
-        case 2:
-            cell.textLabel?.text = "Birthday: "
-            setupDataPickerForCell(cell: cell)
-        case 3:
-            setupGender(cell: cell)
-        default: break
-        }
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+    func setupLayout() {
         
-        switch indexPath.row {
-        case 0:
-            setupImagePicker()
-//        case 1:
-//            
-//        case 2:
-//            
-//        case 3:
-//            
-        default: break
+        imageView.snp.makeConstraints { make in
+            make.top.equalTo(view.snp.top).inset(230)
+            make.centerX.equalTo(view)
+            make.width.height.equalTo(200)
+        }
+        
+        iconImage.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).inset(-100)
+            make.left.equalTo(view).inset(10)
+            make.width.equalTo(30)
+        }
+        
+        labelName.snp.makeConstraints { make in
+            make.centerY.equalTo(iconImage.snp.centerY)
+            make.left.equalTo(iconImage.snp.right).inset(-20)
+        }
+        
+        labelNameData.snp.makeConstraints { make in
+            make.centerY.equalTo(labelName)
+            make.right.equalTo(view).inset(30)
+        }
+        
+        labelLine.snp.makeConstraints { make in
+            make.top.equalTo(iconImage.snp.bottom).inset(-20)
+            make.left.right.equalTo(view).inset(10)
+            make.height.equalTo(1)
+        }
+        
+        iconImage2.snp.makeConstraints { make in
+            make.top.equalTo(labelLine.snp.bottom).inset(-20)
+            make.left.equalTo(view).inset(10)
+            make.width.equalTo(30)
+        }
+        
+        labelDate.snp.makeConstraints { make in
+            make.centerY.equalTo(iconImage2.snp.centerY)
+            make.left.equalTo(iconImage2.snp.right).inset(-20)
+        }
+        
+        datePicker.snp.makeConstraints { make in
+            make.centerY.equalTo(labelDate)
+            make.right.equalTo(view).inset(30)
+        }
+        
+        labelLine2.snp.makeConstraints { make in
+            make.top.equalTo(iconImage2.snp.bottom).inset(-20)
+            make.left.right.equalTo(view).inset(10)
+            make.height.equalTo(1)
+        }
+        
+        iconImage3.snp.makeConstraints { make in
+            make.top.equalTo(labelLine2.snp.bottom).inset(-20)
+            make.left.equalTo(view).inset(10)
+            make.width.equalTo(30)
+        }
+        
+        labelGender.snp.makeConstraints { make in
+            make.centerY.equalTo(iconImage3.snp.centerY)
+            make.left.equalTo(iconImage.snp.right).inset(-20)
+        }
+        
+        labelGenderData.snp.makeConstraints { make in
+            make.centerY.equalTo(labelGender)
+            make.right.equalTo(view).inset(30)
+        }
+        
+        labelLine3.snp.makeConstraints { make in
+            make.top.equalTo(iconImage3.snp.bottom).inset(-20)
+            make.left.right.equalTo(view).inset(10)
+            make.height.equalTo(1)
         }
     }
     
-    
 }
-
-extension DetailViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 {
-            return 350
-        } else {
-            return 60
-        }
-    }
-}
-
-extension DetailViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
-    
-}
-
