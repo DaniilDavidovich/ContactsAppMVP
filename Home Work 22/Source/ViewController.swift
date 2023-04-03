@@ -145,7 +145,6 @@ extension ViewController: UITableViewDataSource {
         let item = coreData.models[indexPath.row]
         let detailView = DetailViewController()
         detailView.item = item
-//        detailView.item?.image = UIImage(systemName: "heart")
         self.navigationController?.pushViewController(detailView, animated: true)
     }
     

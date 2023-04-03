@@ -96,9 +96,4 @@ class CoreDataClass {
             print("error save")
         }
     }
-    
-
-    
-   
-
 }
