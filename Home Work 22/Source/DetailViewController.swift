@@ -18,12 +18,18 @@ class DetailViewController: UIViewController  {
     
     var isEdit = false
     
-    
     //MARK: - UI Elemets
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "photo.circle.fill"))
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 100
+        imageView.clipsToBounds = true
+        imageView.backgroundColor = .clear
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
+        imageView.isUserInteractionEnabled = false
+        imageView.addGestureRecognizer(tapGesture)
+        
         return imageView
     }()
     
@@ -31,14 +37,12 @@ class DetailViewController: UIViewController  {
         let imageView = UIImageView(image: UIImage(systemName: "person"))
         imageView.tintColor = .black
         imageView.contentMode = .scaleAspectFill
-        
         return imageView
     }()
     
     private lazy var labelName: UILabel = {
         let label = UILabel()
         label.text = "Name:"
-        
         return label
     }()
     
@@ -48,7 +52,6 @@ class DetailViewController: UIViewController  {
         button.titleLabel?.font = .systemFont(ofSize: 18)
         button.addTarget(self, action: #selector(pushAllertEdit), for: .touchUpInside)
         button.isUserInteractionEnabled = false
-        
         return button
     }()
     
@@ -69,8 +72,6 @@ class DetailViewController: UIViewController  {
     private lazy var labelDate: UILabel = {
         let label = UILabel()
         label.text = "Date:"
-        
-        
         return label
     }()
     
@@ -99,7 +100,6 @@ class DetailViewController: UIViewController  {
     private lazy var labelGender: UILabel = {
         let label = UILabel()
         label.text = "Gender:"
-        
         return label
     }()
     
@@ -108,7 +108,6 @@ class DetailViewController: UIViewController  {
         button.setTitleColor(.systemBlue, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18)
         button.setTitle("Select", for: .normal)
-        
         
         let maleAction = UIAction(title: "Male") { _ in
             print("Male selected")
@@ -133,11 +132,8 @@ class DetailViewController: UIViewController  {
         let label = UILabel()
         label.backgroundColor = .systemGray4
         label.layer.cornerRadius = 20
-        
         return label
     }()
-    
-//    var item = ContactList()
     
     //MARK: - Lifecycle
     
@@ -239,24 +235,26 @@ class DetailViewController: UIViewController  {
         }
     }
     
-    //MARK: - Methods
+    //MARK: - @objc Methods
     
     @objc private func editData() {
           if isEdit {
-              // Если режим редактирования, меняем кнопку на "Done"
+              // Если режим редактирования, меняем кнопку на "Edit"
               let doneButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editData))
               navigationItem.rightBarButtonItem = doneButton
               datePicker.isUserInteractionEnabled = false
               buttonGender.isUserInteractionEnabled = false
               buttonName.isUserInteractionEnabled = false
+              imageView.isUserInteractionEnabled = false
               isEdit.toggle()
           } else {
-              // Если режим не редактирования, меняем кнопку на "Edit"
+              // Если режим не редактирования, меняем кнопку на "Done"
               let editButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(editData))
               navigationItem.rightBarButtonItem = editButton
               datePicker.isUserInteractionEnabled = true
               buttonGender.isUserInteractionEnabled = true
               buttonName.isUserInteractionEnabled = true
+              imageView.isUserInteractionEnabled = true
               isEdit.toggle()
           }
     }
@@ -275,4 +273,29 @@ class DetailViewController: UIViewController  {
         allert.addAction(cancel)
         present(allert, animated: true)
     }
+    
+    @objc private func imageViewTapped() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary // источник - библиотека фотографий
+        imagePicker.allowsEditing = true
+        imagePicker.delegate = self
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    //MARK: - Methods
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            imageView.image = pickedImage
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension DetailViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+    
 }
