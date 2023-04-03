@@ -15,6 +15,9 @@ class DetailViewController: UIViewController  {
             buttonName.setTitle("\(item?.name ?? "Error")", for: .normal)
             buttonGender.setTitle("\(item?.gender ?? "Select")", for: .normal)
             datePicker.date = item?.date ?? Date()
+            imageView.image = UIImage(data: (item?.image ?? setupImage()))
+            print(item?.image as Any)
+            print(imageData)
         }
     }
     
@@ -23,6 +26,9 @@ class DetailViewController: UIViewController  {
     var coreData = CoreDataClass()
     
     var isEdit = false
+    
+    var systemImage: UIImage?
+    var imageData = Data()
     
     //MARK: - UI Elemets
     
@@ -93,7 +99,6 @@ class DetailViewController: UIViewController  {
         let label = UILabel()
         label.backgroundColor = .systemGray4
         label.layer.cornerRadius = 20
-        
         return label
     }()
     
@@ -252,7 +257,9 @@ class DetailViewController: UIViewController  {
               self.coreData.updateGender(item: self.item ?? ContactList(),
                                          newGender: "\(buttonGender.titleLabel?.text ?? "Empty")")
               
-              self.coreData.updateDate(item: self.item ?? ContactList(), newDate: datePicker.date )
+              self.coreData.updateDate(item: self.item ?? ContactList(),
+                                       newDate: datePicker.date)
+            
               isEdit.toggle()
           } else {
               // Если режим не редактирования, меняем кнопку на "Done"
@@ -264,6 +271,7 @@ class DetailViewController: UIViewController  {
               imageView.isUserInteractionEnabled = true
               buttonGender.setTitleColor(.systemBlue, for: .normal)
               buttonName.setTitleColor(.systemBlue, for: .normal)
+
               isEdit.toggle()
           }
     }
@@ -309,8 +317,8 @@ class DetailViewController: UIViewController  {
         if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             imageView.image = pickedImage
             guard let imageData = pickedImage.jpegData(compressionQuality: 1.0) else { return }
-//            self.item?.image = imageData
-           
+            self.item?.image = imageData
+            self.coreData.updateImage(item: self.item ?? ContactList(), newImage: imageData)
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -341,6 +349,13 @@ class DetailViewController: UIViewController  {
         
         let allerts = [maleAction, femaleAction, nonBinary]
         return allerts
+    }
+    
+    private func setupImage() -> Data {
+        systemImage = UIImage(systemName: "photo.circle.fill")
+        
+        imageData = systemImage?.jpegData(compressionQuality: 0.8) ?? Data()
+        return imageData
     }
 }
 

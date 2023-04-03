@@ -12,8 +12,25 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
         return true
     }
+    
+    func clearData() {
+          let persistentStoreCoordinator = persistentContainer.persistentStoreCoordinator
+          do {
+              let stores = persistentStoreCoordinator.persistentStores
+              for store in stores {
+                  try persistentStoreCoordinator.remove(store)
+                  try FileManager.default.removeItem(at: store.url!)
+              }
+          } catch let error {
+              print("Failed to clear persistent stores: \(error)")
+          }
+      }
+    
+    
+    
 
     // MARK: - Core Data stack
 
@@ -24,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
         */
+        
         let container = NSPersistentContainer(name: "Home_Work_22")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -41,8 +59,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        
+     
+        
+        let data = container.persistentStoreCoordinator
         return container
     }()
+    
+   
 
     // MARK: - Core Data Saving support
 

@@ -86,7 +86,7 @@ class CoreDataClass {
         }
     }
     
-    func updateImage(item: ContactList, newImage: Date) {
+    func updateImage(item: ContactList, newImage: Data) {
         item.image = newImage
         
         do {
@@ -96,4 +96,9 @@ class CoreDataClass {
             print("error save")
         }
     }
+    
+
+    
+   
+
 }
