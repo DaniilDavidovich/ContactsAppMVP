@@ -47,6 +47,7 @@ class DetailViewController: UIViewController  {
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18)
         button.addTarget(self, action: #selector(pushAllertEdit), for: .touchUpInside)
+        button.isUserInteractionEnabled = false
         
         return button
     }()
@@ -104,9 +105,10 @@ class DetailViewController: UIViewController  {
     
     private lazy var buttonGender: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18)
         button.setTitle("Select", for: .normal)
+        
         
         let maleAction = UIAction(title: "Male") { _ in
             print("Male selected")
@@ -114,7 +116,12 @@ class DetailViewController: UIViewController  {
         let femaleAction = UIAction(title: "Female") { _ in
             print("Female selected")
         }
-        let menu = UIMenu(children: [maleAction, femaleAction])
+        
+        let nonBinary = UIAction(title: "Non Binary") { _ in
+            print("Non - binary selected")
+        }
+        
+        let menu = UIMenu(children: [maleAction, femaleAction, nonBinary])
 
         button.menu = menu
         button.showsMenuAsPrimaryAction = true
@@ -241,6 +248,7 @@ class DetailViewController: UIViewController  {
               navigationItem.rightBarButtonItem = doneButton
               datePicker.isUserInteractionEnabled = false
               buttonGender.isUserInteractionEnabled = false
+              buttonName.isUserInteractionEnabled = false
               isEdit.toggle()
           } else {
               // Если режим не редактирования, меняем кнопку на "Edit"
@@ -248,6 +256,7 @@ class DetailViewController: UIViewController  {
               navigationItem.rightBarButtonItem = editButton
               datePicker.isUserInteractionEnabled = true
               buttonGender.isUserInteractionEnabled = true
+              buttonName.isUserInteractionEnabled = true
               isEdit.toggle()
           }
     }
@@ -255,6 +264,15 @@ class DetailViewController: UIViewController  {
     @objc private func pushAllertEdit() {
         let allert = UIAlertController(title: "Edit Name", message: "Write New Name", preferredStyle: .alert)
         allert.addTextField()
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .destructive) { _ in
+            
+        }
+        let done = UIAlertAction(title: "Done", style: .cancel) { _ in
+            
+        }
+        allert.addAction(done)
+        allert.addAction(cancel)
         present(allert, animated: true)
     }
 }

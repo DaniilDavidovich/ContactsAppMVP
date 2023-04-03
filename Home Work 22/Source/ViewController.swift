@@ -127,6 +127,7 @@ extension ViewController: UITableViewDataSource {
         cell.selectionStyle = .default
         let item = coreData.models[indexPath.row]
         cell.textLabel?.text = item.name
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
     
