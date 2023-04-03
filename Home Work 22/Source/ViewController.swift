@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     
     var coreData = CoreDataClass()
     
+    var detailController = DetailViewController()
+    
     //MARK: - Outlets
     
     private lazy var textField: UITextField = {
@@ -60,10 +62,17 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
         coreData.delegate = self
+        detailController.delegate = self
+        
         coreData.getAllItems()
         setupView()
         setupHierarchy()
         setupLayout()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
     
     //MARK: - Setups
@@ -127,6 +136,7 @@ extension ViewController: UITableViewDataSource {
         cell.selectionStyle = .default
         let item = coreData.models[indexPath.row]
         cell.textLabel?.text = item.name
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
     

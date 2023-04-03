@@ -1,8 +1,8 @@
 //
-//  Entity+CoreDataClass.swift
+//  ContactList+CoreDataClass.swift
 //  Home Work 22
 //
-//  Created by Daniil Davidovich on 31.03.23.
+//  Created by Daniil Davidovich on 3.04.23.
 //
 //
 

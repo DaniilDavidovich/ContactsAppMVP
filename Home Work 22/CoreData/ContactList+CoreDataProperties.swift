@@ -1,8 +1,8 @@
 //
-//  Entity+CoreDataProperties.swift
+//  ContactList+CoreDataProperties.swift
 //  Home Work 22
 //
-//  Created by Daniil Davidovich on 31.03.23.
+//  Created by Daniil Davidovich on 3.04.23.
 //
 //
 
@@ -16,9 +16,10 @@ extension ContactList {
         return NSFetchRequest<ContactList>(entityName: "ContactList")
     }
 
-    @NSManaged public var name: String?
     @NSManaged public var date: Date?
     @NSManaged public var gender: String?
+    @NSManaged public var name: String?
+    @NSManaged public var image: Data?
 
 }
 
