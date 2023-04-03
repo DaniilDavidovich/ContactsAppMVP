@@ -10,6 +10,17 @@ import SnapKit
 
 class DetailViewController: UIViewController  {
     
+    var item: ContactList? {
+        didSet {
+            buttonName.setTitle("\(item?.name ?? "Error")", for: .normal)
+        }
+    }
+    
+    var isEdit = false
+    
+    
+    //MARK: - UI Elemets
+    
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "photo.circle.fill"))
         imageView.contentMode = .scaleAspectFill
@@ -31,12 +42,13 @@ class DetailViewController: UIViewController  {
         return label
     }()
     
-    private lazy var labelNameData: UILabel = {
-        let label = UILabel()
-        label.text = "Text"
-        label.textAlignment = .right
+    private lazy var buttonName: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 18)
+        button.addTarget(self, action: #selector(pushAllertEdit), for: .touchUpInside)
         
-        return label
+        return button
     }()
     
     private lazy var labelLine: UILabel = {
@@ -64,6 +76,7 @@ class DetailViewController: UIViewController  {
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
+        datePicker.isUserInteractionEnabled = false
         return datePicker
     }()
     
@@ -89,11 +102,24 @@ class DetailViewController: UIViewController  {
         return label
     }()
     
-    private lazy var labelGenderData: UILabel = {
-        let label = UILabel()
-        label.text = "Select"
-        label.textAlignment = .right
-        return label
+    private lazy var buttonGender: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 18)
+        button.setTitle("Select", for: .normal)
+        
+        let maleAction = UIAction(title: "Male") { _ in
+            print("Male selected")
+        }
+        let femaleAction = UIAction(title: "Female") { _ in
+            print("Female selected")
+        }
+        let menu = UIMenu(children: [maleAction, femaleAction])
+
+        button.menu = menu
+        button.showsMenuAsPrimaryAction = true
+        button.isUserInteractionEnabled = false
+        return button
     }()
     
     private lazy var labelLine3: UILabel = {
@@ -121,11 +147,11 @@ class DetailViewController: UIViewController  {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Contact"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .edit)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editData))
     }
     
     func setupHierarchy() {
-        let subviews = [imageView, iconImage, labelName, labelNameData, labelLine, iconImage2, labelDate, datePicker, labelLine2, iconImage3, labelGender, labelGenderData, labelLine3]
+        let subviews = [imageView, iconImage, labelName, buttonName, labelLine, iconImage2, labelDate, datePicker, labelLine2, iconImage3, labelGender, buttonGender, labelLine3]
         let _ = subviews.map { view in
             self.view.addSubview(view)
         }
@@ -150,7 +176,7 @@ class DetailViewController: UIViewController  {
             make.left.equalTo(iconImage.snp.right).inset(-20)
         }
         
-        labelNameData.snp.makeConstraints { make in
+        buttonName.snp.makeConstraints { make in
             make.centerY.equalTo(labelName)
             make.right.equalTo(view).inset(30)
         }
@@ -194,7 +220,7 @@ class DetailViewController: UIViewController  {
             make.left.equalTo(iconImage.snp.right).inset(-20)
         }
         
-        labelGenderData.snp.makeConstraints { make in
+        buttonGender.snp.makeConstraints { make in
             make.centerY.equalTo(labelGender)
             make.right.equalTo(view).inset(30)
         }
@@ -206,4 +232,29 @@ class DetailViewController: UIViewController  {
         }
     }
     
+    //MARK: - Methods
+    
+    @objc private func editData() {
+          if isEdit {
+              // Если режим редактирования, меняем кнопку на "Done"
+              let doneButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editData))
+              navigationItem.rightBarButtonItem = doneButton
+              datePicker.isUserInteractionEnabled = false
+              buttonGender.isUserInteractionEnabled = false
+              isEdit.toggle()
+          } else {
+              // Если режим не редактирования, меняем кнопку на "Edit"
+              let editButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(editData))
+              navigationItem.rightBarButtonItem = editButton
+              datePicker.isUserInteractionEnabled = true
+              buttonGender.isUserInteractionEnabled = true
+              isEdit.toggle()
+          }
+    }
+    
+    @objc private func pushAllertEdit() {
+        let allert = UIAlertController(title: "Edit Name", message: "Write New Name", preferredStyle: .alert)
+        allert.addTextField()
+        present(allert, animated: true)
+    }
 }

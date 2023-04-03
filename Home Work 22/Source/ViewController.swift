@@ -134,7 +134,7 @@ extension ViewController: UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = coreData.models[indexPath.row]
         let detailView = DetailViewController()
-//        detailView.item = item
+        detailView.item = item
         self.navigationController?.pushViewController(detailView, animated: true)
     }
     
