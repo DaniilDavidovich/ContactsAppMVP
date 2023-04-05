@@ -12,9 +12,11 @@ protocol ViewControllerDelegate: AnyObject {
     func reloadData()
 }
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
     
-    var coreData = CoreDataClass()
+//    var coreData = CoreDataClass()
+    
+    var presenter: MainPresenterInput?
     
     var detailController = DetailViewController()
     
@@ -35,7 +37,8 @@ class ViewController: UIViewController {
         
         let action = UIAction(title: "Tap me") { _ in
             guard let text = self.textField.text, !text.isEmpty else { return }
-            self.coreData.createItem(name: text)
+//            self.coreData.createItem(name: text)
+            self.presenter?.createItem(name: text)
             self.textField.text = ""
         }
         
@@ -61,10 +64,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
-        coreData.delegate = self
-        detailController.delegate = self
+//        coreData.delegate = self
+//        detailController.delegate = self
         
-        coreData.getAllItems()
+        presenter?.getAllItems()
+//        coreData.getAllItems()
         setupView()
         setupHierarchy()
         setupLayout()
@@ -125,24 +129,26 @@ class ViewController: UIViewController {
 }
 
 
-extension ViewController: UITableViewDataSource {
+extension MainViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return coreData.models.count
+        return presenter?.getModelDataCount() ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.selectionStyle = .default
-        let item = coreData.models[indexPath.row]
-        cell.textLabel?.text = item.name
+//        let item = coreData.models[indexPath.row]
+        let item = presenter?.getContact(indexPath.row)
+        cell.textLabel?.text = item?.name
         cell.accessoryType = .disclosureIndicator
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let item = coreData.models[indexPath.row]
+//        let item = coreData.models[indexPath.row]
+        let item = presenter?.getContact(indexPath.row)
         let detailView = DetailViewController()
         detailView.item = item
         self.navigationController?.pushViewController(detailView, animated: true)
@@ -152,19 +158,21 @@ extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             tableView.beginUpdates()
-            coreData.deleteItem(item: coreData.models[indexPath.row])
+//            coreData.deleteItem(item: coreData.models[indexPath.row])
+            
+            presenter?.deleteItem(indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
         }
     }
 }
 
-extension ViewController: UITableViewDelegate {
+extension MainViewController: UITableViewDelegate {
     
 }
 
-extension ViewController: ViewControllerDelegate {
-    func reloadData() {
+extension MainViewController: MainPresenterOutput {
+    func tableReloadData() {
         tableView.reloadData()
     }
 }
