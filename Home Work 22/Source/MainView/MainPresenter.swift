@@ -21,9 +21,6 @@ protocol MainPresenterInput: AnyObject {
     func getContact(_ index: Int) -> ContactList?
 }
 
-
-
-
 class MainPresenter: MainPresenterInput {
    
     let view: MainPresenterOutput

@@ -8,17 +8,10 @@
 import UIKit
 import SnapKit
 
-protocol ViewControllerDelegate: AnyObject {
-    func reloadData()
-}
 
-class MainViewController: UIViewController {
-    
-//    var coreData = CoreDataClass()
-    
+class MainViewController: UIViewController, UITableViewDelegate {
+        
     var presenter: MainPresenterInput?
-    
-    var detailController = DetailViewController()
     
     //MARK: - Outlets
     
@@ -37,7 +30,6 @@ class MainViewController: UIViewController {
         
         let action = UIAction(title: "Tap me") { _ in
             guard let text = self.textField.text, !text.isEmpty else { return }
-//            self.coreData.createItem(name: text)
             self.presenter?.createItem(name: text)
             self.textField.text = ""
         }
@@ -64,11 +56,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
-//        coreData.delegate = self
-//        detailController.delegate = self
-        
         presenter?.getAllItems()
-//        coreData.getAllItems()
         setupView()
         setupHierarchy()
         setupLayout()
@@ -138,7 +126,6 @@ extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.selectionStyle = .default
-//        let item = coreData.models[indexPath.row]
         let item = presenter?.getContact(indexPath.row)
         cell.textLabel?.text = item?.name
         cell.accessoryType = .disclosureIndicator
@@ -147,10 +134,9 @@ extension MainViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-//        let item = coreData.models[indexPath.row]
         let item = presenter?.getContact(indexPath.row)
-        let detailView = DetailViewController()
-        detailView.item = item
+        print("cell :\(String(describing: item?.name ?? "Error Cell"))")
+        let detailView = ModelBuilder.createDetailModule(contact: item ?? ContactList())
         self.navigationController?.pushViewController(detailView, animated: true)
     }
     
@@ -158,17 +144,11 @@ extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             tableView.beginUpdates()
-//            coreData.deleteItem(item: coreData.models[indexPath.row])
-            
             presenter?.deleteItem(indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
         }
     }
-}
-
-extension MainViewController: UITableViewDelegate {
-    
 }
 
 extension MainViewController: MainPresenterOutput {
