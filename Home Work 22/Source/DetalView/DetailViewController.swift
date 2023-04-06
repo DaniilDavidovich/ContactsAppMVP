@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 
+
 class DetailViewController: UIViewController, DetailPresenterOutput {
 
     var contact: ContactList? {
@@ -20,13 +21,12 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
             imageView.image = (UIImage(data: contact?.image ?? Data())) ?? image
         }
     }
+    
     var presenter: DetailPresenterInput?
     
+    // Bool Flag
     var isEdit = false
-    
-    var systemImage: UIImage?
-    var imageData = Data()
-    
+        
     //MARK: - UI Elemets
     
     private lazy var imageView: UIImageView = {
@@ -39,7 +39,6 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
         imageView.isUserInteractionEnabled = false
         imageView.addGestureRecognizer(tapGesture)
-        
         return imageView
     }()
     
@@ -117,9 +116,7 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
         let button = UIButton(type: .system)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18)
-        
         let menu = UIMenu(children: allertForMenu())
-
         button.menu = menu
         button.showsMenuAsPrimaryAction = true
         button.isUserInteractionEnabled = false
@@ -269,7 +266,6 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
     @objc private func giveDate(_ sender: UIDatePicker) {
         let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd.MM.yyyy" // задаем формат даты
-            
             let selectedDate = dateFormatter.string(from: sender.date)
             print(selectedDate)
     }
@@ -281,12 +277,14 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
         let cancel = UIAlertAction(title: "Cancel", style: .destructive) { _ in
             
         }
-        let done = UIAlertAction(title: "Done", style: .default) { [self] _ in
-           
+        
+        let done = UIAlertAction(title: "Done", style: .default) { [weak self] _ in
+            
             if let newName = allert.textFields?.first?.text, !newName.isEmpty {
-                buttonName.setTitle("\(newName)", for: .normal)
+                self?.buttonName.setTitle("\(newName)", for: .normal)
             }
         }
+        
         allert.textFields?.first?.text = self.contact?.name
         allert.addAction(done)
         allert.addAction(cancel)
@@ -303,31 +301,12 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
     
     //MARK: - Methods
     
-    func updateName() {
-        self.presenter?.updateName(item: self.contact ?? ContactList(),
-                                 newName: "\(buttonName.titleLabel?.text ?? "Empty")")
-    }
-    
-    func updateGender() {
-        self.presenter?.updateGender(item: self.contact ?? ContactList(),
-                                   newGender: "\(buttonGender.titleLabel?.text ?? "Empty")")
-    }
-    
-    func updateDate() {
-        self.presenter?.updateDate(item: self.contact ?? ContactList(),
-                                 newDate: datePicker.date)
-    }
-    
-    func updateImage(newImage: Data) {
-        self.presenter?.updateImage(item: self.contact ?? ContactList(), newImage: imageData)
-    }
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             imageView.image = pickedImage
             guard let imageData = pickedImage.jpegData(compressionQuality: 1.0) else { return }
             self.contact?.image = imageData
-            self.presenter?.updateImage(item: self.contact ?? ContactList(), newImage: imageData)
+            updateImage(newImage: imageData)
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -345,7 +324,6 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
         
         let maleAction = UIAction(title: "Male") { action in
             setupButton(text: action.title)
-            
         }
         
         let femaleAction = UIAction(title: "Female") { action in
@@ -359,9 +337,29 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
         let allerts = [maleAction, femaleAction, nonBinary]
         return allerts
     }
+    
+    //MARK: - Extension Methods
+    
+    func updateName() {
+        self.presenter?.updateName(item: self.contact ?? ContactList(),
+                                 newName: "\(buttonName.titleLabel?.text ?? "Empty")")
+    }
+    
+    func updateGender() {
+        self.presenter?.updateGender(item: self.contact ?? ContactList(),
+                                   newGender: "\(buttonGender.titleLabel?.text ?? "Empty")")
+    }
+    
+    func updateDate() {
+        self.presenter?.updateDate(item: self.contact ?? ContactList(),
+                                 newDate: datePicker.date)
+    }
+    
+    func updateImage(newImage: Data) {
+        self.presenter?.updateImage(item: self.contact ?? ContactList(), newImage: newImage)
+    }
 }
 
 extension DetailViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
-    
     
 }

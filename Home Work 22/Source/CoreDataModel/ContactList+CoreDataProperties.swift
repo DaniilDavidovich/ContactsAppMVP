@@ -20,7 +20,6 @@ extension ContactList {
     @NSManaged public var gender: String?
     @NSManaged public var name: String?
     @NSManaged public var image: Data?
-
 }
 
 extension ContactList : Identifiable {

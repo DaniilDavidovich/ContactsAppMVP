@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 protocol DetailPresenterOutput: AnyObject {
     var contact: ContactList? { get set }
     func updateName()
@@ -15,7 +16,7 @@ protocol DetailPresenterOutput: AnyObject {
     func updateImage(newImage: Data)
 }
 
-protocol DetailPresenterInput: AnyObject {
+protocol DetailPresenterInput {
     func updateName(item: ContactList, newName: String)
     func updateGender(item: ContactList, newGender: String)
     func updateDate(item: ContactList, newDate: Date)
@@ -25,11 +26,9 @@ protocol DetailPresenterInput: AnyObject {
 
 class DetailPresenter: DetailPresenterInput {
    
-    
     weak var view: DetailPresenterOutput?
     var dataManager: CoreDataProtocol?
     var contact: ContactList?
-    
     
     required init(view: DetailPresenterOutput, dataManager: CoreDataProtocol, contact: ContactList) {
         self.view = view
@@ -62,6 +61,4 @@ class DetailPresenter: DetailPresenterInput {
         contact?.image = newImage
         dataManager?.getAllItems()
     }
-    
-    
 }

@@ -116,6 +116,7 @@ class MainViewController: UIViewController, UITableViewDelegate {
     }
 }
 
+    //MARK: - Extensions
 
 extension MainViewController: UITableViewDataSource {
     
@@ -139,7 +140,6 @@ extension MainViewController: UITableViewDataSource {
         let detailView = ModelBuilder.createDetailModule(contact: item ?? ContactList())
         self.navigationController?.pushViewController(detailView, animated: true)
     }
-    
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {

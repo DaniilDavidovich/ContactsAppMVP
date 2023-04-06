@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 protocol CoreDataProtocol {
     var models: [ContactList]? { get set}
     func getAllItems()
@@ -16,5 +17,4 @@ protocol CoreDataProtocol {
     func updateGender(item: ContactList, newGender: String)
     func updateDate(item: ContactList, newDate: Date)
     func updateImage(item: ContactList, newImage: Data)
-    
 }

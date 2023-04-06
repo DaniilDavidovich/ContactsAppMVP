@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+
 protocol BuilderProtocol {
     static func createMainModule() -> UIViewController
     static func createDetailModule(contact: ContactList) -> UIViewController
@@ -32,6 +33,4 @@ class ModelBuilder: BuilderProtocol {
         view.contact = contact
         return view
     }
-
-    
 }

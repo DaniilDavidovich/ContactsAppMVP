@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 
+
 @objc(ContactList)
 public class ContactList: NSManagedObject {
 

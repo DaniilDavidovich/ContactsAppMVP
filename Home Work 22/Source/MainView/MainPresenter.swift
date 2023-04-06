@@ -12,7 +12,7 @@ protocol MainPresenterOutput: AnyObject {
     func tableReloadData()
 }
 
-protocol MainPresenterInput: AnyObject {
+protocol MainPresenterInput {
     init(view: MainPresenterOutput, dataManager: CoreDataProtocol)
     func getAllItems()
     func createItem(name: String)
@@ -23,7 +23,7 @@ protocol MainPresenterInput: AnyObject {
 
 class MainPresenter: MainPresenterInput {
    
-    let view: MainPresenterOutput
+    weak var view: MainPresenterOutput?
     let dataManager: CoreDataProtocol
     
     required init(view: MainPresenterOutput, dataManager: CoreDataProtocol) {
@@ -33,17 +33,17 @@ class MainPresenter: MainPresenterInput {
     
     func getAllItems() {
         dataManager.getAllItems()
-        view.tableReloadData()
+        view?.tableReloadData()
     }
     
     func createItem(name: String) {
         dataManager.createItem(name: name)
-        view.tableReloadData()
+        view?.tableReloadData()
     }
     
     func deleteItem(_ index: Int) {
         dataManager.deleteItem(index: index)
-        view.tableReloadData()
+        view?.tableReloadData()
     }
     
     func getModelDataCount() -> Int {
@@ -53,5 +53,4 @@ class MainPresenter: MainPresenterInput {
     func getContact(_ index: Int) -> ContactList? {
         return dataManager.models?[index]
     }
-   
 }

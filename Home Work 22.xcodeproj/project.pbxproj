@@ -55,20 +55,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A50FA25E29DDB4AA0035192F /* CoreData Model */ = {
+		A50FA25E29DDB4AA0035192F /* CoreDataModel */ = {
 			isa = PBXGroup;
 			children = (
 				A50FA25A29DDB4940035192F /* ContactList+CoreDataClass.swift */,
 				A50FA25B29DDB4940035192F /* ContactList+CoreDataProperties.swift */,
 			);
-			path = "CoreData Model";
+			path = CoreDataModel;
 			sourceTree = "<group>";
 		};
 		A50FA25F29DDB5970035192F /* MainView */ = {
 			isa = PBXGroup;
 			children = (
-				A50FA26129DDC0CD0035192F /* MainPresenter.swift */,
 				A5A2154D29D702CE001B121D /* MainViewController.swift */,
+				A50FA26129DDC0CD0035192F /* MainPresenter.swift */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -136,12 +136,12 @@
 		A5A2156129D7031A001B121D /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				A50FA26429DDEF600035192F /* Bilder */,
-				A50FA26329DDCF760035192F /* Services */,
-				A50FA25E29DDB4AA0035192F /* CoreData Model */,
-				A50FA26029DDC0640035192F /* DetalView */,
-				A50FA25F29DDB5970035192F /* MainView */,
 				A5A2156029D7030F001B121D /* App */,
+				A50FA26429DDEF600035192F /* Bilder */,
+				A50FA25E29DDB4AA0035192F /* CoreDataModel */,
+				A50FA25F29DDB5970035192F /* MainView */,
+				A50FA26029DDC0640035192F /* DetalView */,
+				A50FA26329DDCF760035192F /* Services */,
 			);
 			path = Source;
 			sourceTree = "<group>";
