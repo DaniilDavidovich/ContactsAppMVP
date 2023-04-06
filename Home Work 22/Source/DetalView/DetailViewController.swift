@@ -8,27 +8,25 @@
 import UIKit
 import SnapKit
 
-class DetailViewController: UIViewController  {
- 
-    var item: ContactList? {
+
+class DetailViewController: UIViewController, DetailPresenterOutput {
+
+    var contact: ContactList? {
         didSet {
-            buttonName.setTitle("\(item?.name ?? "Error")", for: .normal)
-            buttonGender.setTitle("\(item?.gender ?? "Select")", for: .normal)
-            datePicker.date = item?.date ?? Date()
+            print("Did set: \(contact?.name ?? "error")")
+            buttonName.setTitle("\(contact?.name ?? "Error")", for: .normal)
+            buttonGender.setTitle("\(contact?.gender ?? "Select")", for: .normal)
+            datePicker.date = contact?.date ?? Date()
             let image = UIImage(systemName: "photo.circle.fill")
-            imageView.image = (UIImage(data: item?.image ?? Data())) ?? image
+            imageView.image = (UIImage(data: contact?.image ?? Data())) ?? image
         }
     }
     
-    weak var delegate: ViewControllerDelegate?
+    var presenter: DetailPresenterInput?
     
-    var coreData = CoreDataClass()
-    
+    // Bool Flag
     var isEdit = false
-    
-    var systemImage: UIImage?
-    var imageData = Data()
-    
+        
     //MARK: - UI Elemets
     
     private lazy var imageView: UIImageView = {
@@ -41,7 +39,6 @@ class DetailViewController: UIViewController  {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
         imageView.isUserInteractionEnabled = false
         imageView.addGestureRecognizer(tapGesture)
-        
         return imageView
     }()
     
@@ -119,10 +116,7 @@ class DetailViewController: UIViewController  {
         let button = UIButton(type: .system)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18)
-//        button.setTitle("Select", for: .normal)
-        
         let menu = UIMenu(children: allertForMenu())
-
         button.menu = menu
         button.showsMenuAsPrimaryAction = true
         button.isUserInteractionEnabled = false
@@ -249,17 +243,10 @@ class DetailViewController: UIViewController  {
               imageView.isUserInteractionEnabled = false
               buttonGender.setTitleColor(.black, for: .normal)
               buttonName.setTitleColor(.black, for: .normal)
-             
-              
-              self.coreData.updateName(item: self.item ?? ContactList(),
-                                       newName: "\(buttonName.titleLabel?.text ?? "Empty")")
-              
-              self.coreData.updateGender(item: self.item ?? ContactList(),
-                                         newGender: "\(buttonGender.titleLabel?.text ?? "Empty")")
-              
-              self.coreData.updateDate(item: self.item ?? ContactList(),
-                                       newDate: datePicker.date)
               imageView.tintColor = .black
+              updateName()
+              updateDate()
+              updateGender()
               isEdit.toggle()
           } else {
               // Если режим не редактирования, меняем кнопку на "Done"
@@ -279,7 +266,6 @@ class DetailViewController: UIViewController  {
     @objc private func giveDate(_ sender: UIDatePicker) {
         let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd.MM.yyyy" // задаем формат даты
-            
             let selectedDate = dateFormatter.string(from: sender.date)
             print(selectedDate)
     }
@@ -291,13 +277,15 @@ class DetailViewController: UIViewController  {
         let cancel = UIAlertAction(title: "Cancel", style: .destructive) { _ in
             
         }
-        let done = UIAlertAction(title: "Done", style: .default) { [self] _ in
-           
+        
+        let done = UIAlertAction(title: "Done", style: .default) { [weak self] _ in
+            
             if let newName = allert.textFields?.first?.text, !newName.isEmpty {
-                buttonName.setTitle("\(newName)", for: .normal)
+                self?.buttonName.setTitle("\(newName)", for: .normal)
             }
         }
-        allert.textFields?.first?.text = self.item?.name
+        
+        allert.textFields?.first?.text = self.contact?.name
         allert.addAction(done)
         allert.addAction(cancel)
         present(allert, animated: true)
@@ -317,8 +305,8 @@ class DetailViewController: UIViewController  {
         if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             imageView.image = pickedImage
             guard let imageData = pickedImage.jpegData(compressionQuality: 1.0) else { return }
-            self.item?.image = imageData
-            self.coreData.updateImage(item: self.item ?? ContactList(), newImage: imageData)
+            self.contact?.image = imageData
+            updateImage(newImage: imageData)
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -331,12 +319,11 @@ class DetailViewController: UIViewController  {
         
         func setupButton(text: String) {
             self.buttonGender.setTitle(text, for: .normal)
-            self.item?.gender = text
+            self.contact?.gender = text
         }
         
         let maleAction = UIAction(title: "Male") { action in
             setupButton(text: action.title)
-            
         }
         
         let femaleAction = UIAction(title: "Female") { action in
@@ -349,6 +336,27 @@ class DetailViewController: UIViewController  {
         
         let allerts = [maleAction, femaleAction, nonBinary]
         return allerts
+    }
+    
+    //MARK: - Extension Methods
+    
+    func updateName() {
+        self.presenter?.updateName(item: self.contact ?? ContactList(),
+                                 newName: "\(buttonName.titleLabel?.text ?? "Empty")")
+    }
+    
+    func updateGender() {
+        self.presenter?.updateGender(item: self.contact ?? ContactList(),
+                                   newGender: "\(buttonGender.titleLabel?.text ?? "Empty")")
+    }
+    
+    func updateDate() {
+        self.presenter?.updateDate(item: self.contact ?? ContactList(),
+                                 newDate: datePicker.date)
+    }
+    
+    func updateImage(newImage: Data) {
+        self.presenter?.updateImage(item: self.contact ?? ContactList(), newImage: newImage)
     }
 }
 

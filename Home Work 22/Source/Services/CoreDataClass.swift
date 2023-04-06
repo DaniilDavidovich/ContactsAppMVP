@@ -9,21 +9,15 @@ import Foundation
 import UIKit
 
 
-class CoreDataClass {
+class CoreDataClass: CoreDataProtocol {
     
-    var models = [ContactList]()
-    
-    weak var delegate: ViewControllerDelegate?
-    
+    var models: [ContactList]?
+
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-
     func getAllItems() {
         do {
             models = try context.fetch(ContactList.fetchRequest())
-            DispatchQueue.main.async {
-                self.delegate?.reloadData()
-            }
            
         } catch {
             print("Error")
@@ -42,7 +36,8 @@ class CoreDataClass {
         }
     }
     
-    func deleteItem(item: ContactList) {
+    func deleteItem(index: Int) {
+        guard let item = models?[index] else { return }
         context.delete(item)
        
         do {
