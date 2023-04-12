@@ -100,20 +100,6 @@ class MainViewController: UIViewController, UITableViewDelegate {
             make.top.equalTo(button.snp.bottom).inset(-20)
         }
     }
-    
-    //MARK: - Methods
-    
-    // for Dismis keyboard
-    func hideKeyboardWhenTappedAround() {
-
-    let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-
-    @objc func dismissKeyboard() {
-    view.endEditing(true)
-    }
 }
 
     //MARK: - Extensions

@@ -9,13 +9,13 @@ import UIKit
 import SnapKit
 
 
-class DetailViewController: UIViewController, DetailPresenterOutput {
+class DetailViewController: UIViewController, DetailPresenterOutput, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
 
     var contact: ContactList? {
         didSet {
             print("Did set: \(contact?.name ?? "error")")
-            buttonName.setTitle("\(contact?.name ?? "Error")", for: .normal)
-            buttonGender.setTitle("\(contact?.gender ?? "Select")", for: .normal)
+            nameButton.setTitle("\(contact?.name ?? "Error")", for: .normal)
+            genderButton.setTitle("\(contact?.gender ?? "Select")", for: .normal)
             datePicker.date = contact?.date ?? Date()
             let image = UIImage(systemName: "photo.circle.fill")
             imageView.image = (UIImage(data: contact?.image ?? Data())) ?? image
@@ -32,7 +32,7 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "photo.circle.fill"))
         imageView.contentMode = .scaleAspectFill
-        imageView.tintColor = .black
+        imageView.tintColor = .systemGray2
         imageView.layer.cornerRadius = 100
         imageView.clipsToBounds = true
         imageView.backgroundColor = .clear
@@ -49,13 +49,13 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
         return imageView
     }()
     
-    private lazy var labelName: UILabel = {
+    private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Name:"
         return label
     }()
     
-    private lazy var buttonName: UIButton = {
+    private lazy var nameButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18)
@@ -64,7 +64,7 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
         return button
     }()
     
-    private lazy var labelLine: UILabel = {
+    private lazy var lineLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = .systemGray4
         label.layer.cornerRadius = 20
@@ -78,7 +78,7 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
         return imageView
     }()
     
-    private lazy var labelDate: UILabel = {
+    private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.text = "Date:"
         return label
@@ -92,7 +92,7 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
         return datePicker
     }()
     
-    private lazy var labelLine2: UILabel = {
+    private lazy var lineLabel2: UILabel = {
         let label = UILabel()
         label.backgroundColor = .systemGray4
         label.layer.cornerRadius = 20
@@ -106,13 +106,13 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
         return imageView
     }()
     
-    private lazy var labelGender: UILabel = {
+    private lazy var genderLabel: UILabel = {
         let label = UILabel()
         label.text = "Gender:"
         return label
     }()
     
-    private lazy var buttonGender: UIButton = {
+    private lazy var genderButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18)
@@ -123,7 +123,7 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
         return button
     }()
     
-    private lazy var labelLine3: UILabel = {
+    private lazy var lineLabel3: UILabel = {
         let label = UILabel()
         label.backgroundColor = .systemGray4
         label.layer.cornerRadius = 20
@@ -149,7 +149,7 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
     }
     
     func setupHierarchy() {
-        let subviews = [imageView, iconImage, labelName, buttonName, labelLine, iconImage2, labelDate, datePicker, labelLine2, iconImage3, labelGender, buttonGender, labelLine3]
+        let subviews = [imageView, iconImage, nameLabel, nameButton, lineLabel, iconImage2, dateLabel, datePicker, lineLabel2, iconImage3, genderLabel, genderButton, lineLabel3]
         let _ = subviews.map { view in
             self.view.addSubview(view)
         }
@@ -169,61 +169,61 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
             make.width.equalTo(30)
         }
         
-        labelName.snp.makeConstraints { make in
+        nameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(iconImage.snp.centerY)
             make.left.equalTo(iconImage.snp.right).inset(-20)
         }
         
-        buttonName.snp.makeConstraints { make in
-            make.centerY.equalTo(labelName)
+        nameButton.snp.makeConstraints { make in
+            make.centerY.equalTo(nameLabel)
             make.right.equalTo(view).inset(30)
         }
         
-        labelLine.snp.makeConstraints { make in
+        lineLabel.snp.makeConstraints { make in
             make.top.equalTo(iconImage.snp.bottom).inset(-20)
             make.left.right.equalTo(view).inset(10)
             make.height.equalTo(1)
         }
         
         iconImage2.snp.makeConstraints { make in
-            make.top.equalTo(labelLine.snp.bottom).inset(-20)
+            make.top.equalTo(lineLabel.snp.bottom).inset(-20)
             make.left.equalTo(view).inset(10)
             make.width.equalTo(30)
         }
         
-        labelDate.snp.makeConstraints { make in
+        dateLabel.snp.makeConstraints { make in
             make.centerY.equalTo(iconImage2.snp.centerY)
             make.left.equalTo(iconImage2.snp.right).inset(-20)
         }
         
         datePicker.snp.makeConstraints { make in
-            make.centerY.equalTo(labelDate)
+            make.centerY.equalTo(dateLabel)
             make.right.equalTo(view).inset(30)
         }
         
-        labelLine2.snp.makeConstraints { make in
+        lineLabel2.snp.makeConstraints { make in
             make.top.equalTo(iconImage2.snp.bottom).inset(-20)
             make.left.right.equalTo(view).inset(10)
             make.height.equalTo(1)
         }
         
         iconImage3.snp.makeConstraints { make in
-            make.top.equalTo(labelLine2.snp.bottom).inset(-20)
+            make.top.equalTo(lineLabel2.snp.bottom).inset(-20)
             make.left.equalTo(view).inset(10)
             make.width.equalTo(30)
         }
         
-        labelGender.snp.makeConstraints { make in
+        genderLabel.snp.makeConstraints { make in
             make.centerY.equalTo(iconImage3.snp.centerY)
             make.left.equalTo(iconImage.snp.right).inset(-20)
         }
         
-        buttonGender.snp.makeConstraints { make in
-            make.centerY.equalTo(labelGender)
+        genderButton.snp.makeConstraints { make in
+            make.centerY.equalTo(genderLabel)
             make.right.equalTo(view).inset(30)
         }
         
-        labelLine3.snp.makeConstraints { make in
+        lineLabel3.snp.makeConstraints { make in
             make.top.equalTo(iconImage3.snp.bottom).inset(-20)
             make.left.right.equalTo(view).inset(10)
             make.height.equalTo(1)
@@ -238,12 +238,12 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
               let doneButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editData))
               navigationItem.rightBarButtonItem = doneButton
               datePicker.isUserInteractionEnabled = false
-              buttonGender.isUserInteractionEnabled = false
-              buttonName.isUserInteractionEnabled = false
+              genderButton.isUserInteractionEnabled = false
+              nameButton.isUserInteractionEnabled = false
               imageView.isUserInteractionEnabled = false
-              buttonGender.setTitleColor(.black, for: .normal)
-              buttonName.setTitleColor(.black, for: .normal)
-              imageView.tintColor = .black
+              genderButton.setTitleColor(.black, for: .normal)
+              nameButton.setTitleColor(.black, for: .normal)
+              imageView.tintColor = .systemGray2
               updateName()
               updateDate()
               updateGender()
@@ -253,11 +253,11 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
               let editButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(editData))
               navigationItem.rightBarButtonItem = editButton
               datePicker.isUserInteractionEnabled = true
-              buttonGender.isUserInteractionEnabled = true
-              buttonName.isUserInteractionEnabled = true
+              genderButton.isUserInteractionEnabled = true
+              nameButton.isUserInteractionEnabled = true
               imageView.isUserInteractionEnabled = true
-              buttonGender.setTitleColor(.systemBlue, for: .normal)
-              buttonName.setTitleColor(.systemBlue, for: .normal)
+              genderButton.setTitleColor(.systemBlue, for: .normal)
+              nameButton.setTitleColor(.systemBlue, for: .normal)
               imageView.tintColor = .systemBlue
               isEdit.toggle()
           }
@@ -281,7 +281,7 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
         let done = UIAlertAction(title: "Done", style: .default) { [weak self] _ in
             
             if let newName = allert.textFields?.first?.text, !newName.isEmpty {
-                self?.buttonName.setTitle("\(newName)", for: .normal)
+                self?.nameButton.setTitle("\(newName)", for: .normal)
             }
         }
         
@@ -318,7 +318,7 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
     private func allertForMenu() -> [UIMenuElement]{
         
         func setupButton(text: String) {
-            self.buttonGender.setTitle(text, for: .normal)
+            self.genderButton.setTitle(text, for: .normal)
             self.contact?.gender = text
         }
         
@@ -341,25 +341,21 @@ class DetailViewController: UIViewController, DetailPresenterOutput {
     //MARK: - Extension Methods
     
     func updateName() {
-        self.presenter?.updateName(item: self.contact ?? ContactList(),
-                                 newName: "\(buttonName.titleLabel?.text ?? "Empty")")
+        presenter?.updateName(item: self.contact ?? ContactList(),
+                                 newName: "\(nameButton.titleLabel?.text ?? "Empty")")
     }
     
     func updateGender() {
-        self.presenter?.updateGender(item: self.contact ?? ContactList(),
-                                   newGender: "\(buttonGender.titleLabel?.text ?? "Empty")")
+        presenter?.updateGender(item: self.contact ?? ContactList(),
+                                   newGender: "\(genderButton.titleLabel?.text ?? "Empty")")
     }
     
     func updateDate() {
-        self.presenter?.updateDate(item: self.contact ?? ContactList(),
+        presenter?.updateDate(item: self.contact ?? ContactList(),
                                  newDate: datePicker.date)
     }
     
     func updateImage(newImage: Data) {
-        self.presenter?.updateImage(item: self.contact ?? ContactList(), newImage: newImage)
+        presenter?.updateImage(item: self.contact ?? ContactList(), newImage: newImage)
     }
-}
-
-extension DetailViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
-    
 }

@@ -5,7 +5,6 @@
 //  Created by Daniil Davidovich on 5.04.23.
 //
 
-import Foundation
 import UIKit
 
 
@@ -17,9 +16,9 @@ protocol BuilderProtocol {
 class ModelBuilder: BuilderProtocol {
   
     static func createMainModule() -> UIViewController {
-        let dataManager = CoreDataClass()
+        let coreDataClass = CoreDataClass()
         let view = MainViewController()
-        let presenter = MainPresenter(view: view, dataManager: dataManager)
+        let presenter = MainPresenter(view: view, dataManager: coreDataClass)
         view.presenter = presenter
         return view
     }
