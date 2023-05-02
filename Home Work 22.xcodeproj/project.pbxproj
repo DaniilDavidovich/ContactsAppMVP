@@ -7,23 +7,40 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A50FA25C29DDB4940035192F /* ContactList+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50FA25A29DDB4940035192F /* ContactList+CoreDataClass.swift */; };
+		A50FA25D29DDB4940035192F /* ContactList+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50FA25B29DDB4940035192F /* ContactList+CoreDataProperties.swift */; };
+		A50FA26229DDC0CD0035192F /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50FA26129DDC0CD0035192F /* MainPresenter.swift */; };
+		A50FA26629DDEF700035192F /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50FA26529DDEF700035192F /* Builder.swift */; };
+		A50FA26B29DE11FD0035192F /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50FA26A29DE11FD0035192F /* DetailPresenter.swift */; };
+		A57E75CB29E7031100D2D158 /* MainViewController +Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57E75CA29E7031100D2D158 /* MainViewController +Ext.swift */; };
 		A5A2154A29D702CE001B121D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A2154929D702CE001B121D /* AppDelegate.swift */; };
 		A5A2154C29D702CE001B121D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A2154B29D702CE001B121D /* SceneDelegate.swift */; };
-		A5A2154E29D702CE001B121D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A2154D29D702CE001B121D /* ViewController.swift */; };
+		A5A2154E29D702CE001B121D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A2154D29D702CE001B121D /* MainViewController.swift */; };
 		A5A2155429D702CE001B121D /* Home_Work_22.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5A2155229D702CE001B121D /* Home_Work_22.xcdatamodeld */; };
 		A5A2155629D702CF001B121D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5A2155529D702CF001B121D /* Assets.xcassets */; };
 		A5A2155929D702CF001B121D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5A2155729D702CF001B121D /* LaunchScreen.storyboard */; };
+		A5A2156A29D7402D001B121D /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A5A2156929D7402D001B121D /* SnapKit */; };
+		A5A2156E29D77882001B121D /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A2156D29D77882001B121D /* DetailViewController.swift */; };
+		A5A2157329D7B837001B121D /* CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A2157229D7B837001B121D /* CoreDataClass.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A50FA25A29DDB4940035192F /* ContactList+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactList+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A50FA25B29DDB4940035192F /* ContactList+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactList+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A50FA26129DDC0CD0035192F /* MainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
+		A50FA26529DDEF700035192F /* Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
+		A50FA26A29DE11FD0035192F /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
+		A57E75CA29E7031100D2D158 /* MainViewController +Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController +Ext.swift"; sourceTree = "<group>"; };
 		A5A2154629D702CE001B121D /* Home Work 22.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Home Work 22.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5A2154929D702CE001B121D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A5A2154B29D702CE001B121D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A5A2154D29D702CE001B121D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A5A2154D29D702CE001B121D /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A5A2155329D702CE001B121D /* Home_Work_22.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Home_Work_22.xcdatamodel; sourceTree = "<group>"; };
 		A5A2155529D702CF001B121D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A5A2155829D702CF001B121D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A5A2155A29D702CF001B121D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A5A2156D29D77882001B121D /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		A5A2157229D7B837001B121D /* CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataClass.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,12 +48,64 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5A2156A29D7402D001B121D /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A50FA25E29DDB4AA0035192F /* CoreDataModel */ = {
+			isa = PBXGroup;
+			children = (
+				A50FA25A29DDB4940035192F /* ContactList+CoreDataClass.swift */,
+				A50FA25B29DDB4940035192F /* ContactList+CoreDataProperties.swift */,
+			);
+			path = CoreDataModel;
+			sourceTree = "<group>";
+		};
+		A50FA25F29DDB5970035192F /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				A5A2154D29D702CE001B121D /* MainViewController.swift */,
+				A50FA26129DDC0CD0035192F /* MainPresenter.swift */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
+		A50FA26029DDC0640035192F /* DetalView */ = {
+			isa = PBXGroup;
+			children = (
+				A5A2156D29D77882001B121D /* DetailViewController.swift */,
+				A50FA26A29DE11FD0035192F /* DetailPresenter.swift */,
+			);
+			path = DetalView;
+			sourceTree = "<group>";
+		};
+		A50FA26329DDCF760035192F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A5A2157229D7B837001B121D /* CoreDataClass.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A50FA26429DDEF600035192F /* Bilder */ = {
+			isa = PBXGroup;
+			children = (
+				A50FA26529DDEF700035192F /* Builder.swift */,
+			);
+			path = Bilder;
+			sourceTree = "<group>";
+		};
+		A57E75C929E702F100D2D158 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A57E75CA29E7031100D2D158 /* MainViewController +Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		A5A2153D29D702CE001B121D = {
 			isa = PBXGroup;
 			children = (
@@ -56,8 +125,9 @@
 		A5A2154829D702CE001B121D /* Home Work 22 */ = {
 			isa = PBXGroup;
 			children = (
-				A5A2156229D7031F001B121D /* Resource */,
 				A5A2156129D7031A001B121D /* Source */,
+				A57E75C929E702F100D2D158 /* Extensions */,
+				A5A2156229D7031F001B121D /* Resource */,
 			);
 			path = "Home Work 22";
 			sourceTree = "<group>";
@@ -74,8 +144,12 @@
 		A5A2156129D7031A001B121D /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				A5A2154D29D702CE001B121D /* ViewController.swift */,
 				A5A2156029D7030F001B121D /* App */,
+				A50FA26429DDEF600035192F /* Bilder */,
+				A50FA25E29DDB4AA0035192F /* CoreDataModel */,
+				A50FA25F29DDB5970035192F /* MainView */,
+				A50FA26029DDC0640035192F /* DetalView */,
+				A50FA26329DDCF760035192F /* Services */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -107,6 +181,9 @@
 			dependencies = (
 			);
 			name = "Home Work 22";
+			packageProductDependencies = (
+				A5A2156929D7402D001B121D /* SnapKit */,
+			);
 			productName = "Home Work 22";
 			productReference = A5A2154629D702CE001B121D /* Home Work 22.app */;
 			productType = "com.apple.product-type.application";
@@ -135,6 +212,9 @@
 				Base,
 			);
 			mainGroup = A5A2153D29D702CE001B121D;
+			packageReferences = (
+				A5A2156829D7402D001B121D /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = A5A2154729D702CE001B121D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -161,10 +241,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5A2154E29D702CE001B121D /* ViewController.swift in Sources */,
+				A50FA26229DDC0CD0035192F /* MainPresenter.swift in Sources */,
+				A5A2154E29D702CE001B121D /* MainViewController.swift in Sources */,
+				A50FA25C29DDB4940035192F /* ContactList+CoreDataClass.swift in Sources */,
+				A50FA26629DDEF700035192F /* Builder.swift in Sources */,
+				A50FA25D29DDB4940035192F /* ContactList+CoreDataProperties.swift in Sources */,
 				A5A2154A29D702CE001B121D /* AppDelegate.swift in Sources */,
 				A5A2154C29D702CE001B121D /* SceneDelegate.swift in Sources */,
 				A5A2155429D702CE001B121D /* Home_Work_22.xcdatamodeld in Sources */,
+				A5A2157329D7B837001B121D /* CoreDataClass.swift in Sources */,
+				A5A2156E29D77882001B121D /* DetailViewController.swift in Sources */,
+				A57E75CB29E7031100D2D158 /* MainViewController +Ext.swift in Sources */,
+				A50FA26B29DE11FD0035192F /* DetailPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,6 +460,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A5A2156829D7402D001B121D /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A5A2156929D7402D001B121D /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5A2156829D7402D001B121D /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		A5A2155229D702CE001B121D /* Home_Work_22.xcdatamodeld */ = {
